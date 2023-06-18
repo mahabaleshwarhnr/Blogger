@@ -1,0 +1,6 @@
+{
+   "error": {
+       "message": "something went wrong",
+       "exceptionCode": "E-500"
+   }
+}

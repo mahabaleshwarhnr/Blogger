@@ -1,0 +1,52 @@
+{
+    "mappings": [
+        {
+            "scenarioName": "posts",
+            "requiredScenarioState": "Started",
+            "request": {
+                "method": "GET",
+                "url": "/posts"
+            },
+            "response": {
+                "status": 204,
+                "bodyFileName": "posts-default.json"
+            }
+        },
+        {
+            "scenarioName": "posts",
+            "requiredScenarioState": "Started",
+            "request": {
+                "method": "GET",
+                "url": "/posts"
+            },
+            "response": {
+                "status": 200,
+                "bodyFileName": "posts-default.json"
+            }
+        },
+        {
+            "scenarioName": "posts",
+            "requiredScenarioState": "Started",
+            "request": {
+                "url": "/posts",
+                "method": "GET"
+            },
+            "response": {
+                "status": 200,
+                "bodyFileName": "posts-empty.json"
+            }
+        },
+        {
+            "scenarioName": "posts",
+            "requiredScenarioState": "Started",
+            "request": {
+                "method": "GET",
+                "url": "/posts"
+            },
+            "response": {
+                "status": 500,
+                "bodyFileName": "posts-error.json"
+            }
+        }
+    ]
+}

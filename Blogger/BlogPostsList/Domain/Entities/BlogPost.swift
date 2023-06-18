@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BlogPost {
+struct BlogPost: Equatable {
     let id: String
     let title: String
     let body: String

@@ -24,7 +24,9 @@ extension Container {
 
 extension Container {
     var apiClient: Factory<APIClient> {
-        self { RESTAPIClient(url: URL(string: "https://jsonplaceholder.typicode.com/")!) }
+        self {
+            RESTAPIClient(url: URL(string: "https://jsonplaceholder.typicode.com/")!)
+        }
     }
 }
 
@@ -40,12 +42,13 @@ extension Container {
     
     func setupMocks() {
         apiClient.register {
-            RESTAPIClient(url: URL(string: "http://localhost:9999/")!)
+            RESTAPIClient(url: URL(string: "http://localhost:8080/")!)
         }
         
-//        mainScheduler.register {
-//            .immediate
-//        }
+        mainScheduler.register {
+            .immediate
+        }
     }
 }
+
 

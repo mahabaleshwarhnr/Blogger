@@ -8,6 +8,7 @@
 import Foundation
 import OHHTTPStubs
 import OHHTTPStubsSwift
+import WiremockClient
 
 public struct ErrorResponse {
     public let statusCode: Int
@@ -42,20 +43,45 @@ extension NetworkStub {
 
 public extension NetworkStub {
     func emptyResponse() {
-        stub(condition: isPath(endPoint)) { _ in
-          return fixture(filePath: filePath(emptyResponseFileName), headers: nil)
-        }
+        let newState = "posts_empty"
+        initialStub(scenarioState: newState)
+        let stub = StubMapping.stubFor(requestMethod: .GET,
+                                       urlMatchCondition: .urlPathEqualTo,
+                                       url: endPoint)
+            .inScenario("posts")
+            .whenScenarioStateIs(newState)
+            .willReturn(ResponseDefinition())
+        try? WiremockClient.postMapping(stubMapping: stub)
     }
     func errorResponse(_ error: ErrorResponse = .default) {
-        stub(condition: isPath(endPoint)) { _ in
-            return fixture(filePath: filePath(errorResponseFileName), status: Int32(error.statusCode), headers: nil)
-        }
+        let stub = StubMapping.stubFor(requestMethod: .GET,
+                                       urlMatchCondition: .urlPathEqualTo,
+                                       url: endPoint)
+            .inScenario("posts_error")
+            .whenScenarioStateIs("Started")
+            .willReturn(ResponseDefinition())
+        try? WiremockClient.postMapping(stubMapping: stub)
     }
     
     func successResponse() {
-        stub(condition: isPath(endPoint)) { _ in
-          return fixture(filePath: filePath(successResponseFileName), headers: nil)
-        }
+        let stub = StubMapping.stubFor(requestMethod: .GET,
+                                       urlMatchCondition: .urlPathEqualTo,
+                                       url: endPoint)
+            .inScenario("posts_success")
+            .whenScenarioStateIs("Started")
+            .willReturn(ResponseDefinition())
+        try? WiremockClient.postMapping(stubMapping: stub)
+    }
+    
+    private func initialStub(scenarioState: String) {
+        let stub = StubMapping.stubFor(requestMethod: .GET,
+                                       urlMatchCondition: .urlPathEqualTo,
+                                       url: endPoint)
+            .inScenario("posts")
+            .whenScenarioStateIs("Started")
+            .willReturn(ResponseDefinition())
+            .willSetStateTo(scenarioState)
+        try? WiremockClient.postMapping(stubMapping: stub)
     }
 }
 
